@@ -67,6 +67,7 @@ namespace Gazeus.DesafioMatch3.Views
                 GameObject tilePrefab = _tilePrefabRepository.TileTypePrefabList[addedTileInfo.Type];
                 GameObject tile = Instantiate(tilePrefab);
                 tileSpot.SetTile(tile);
+                tileSpot.SetSelectedMaterialToImage();
 
                 _tiles[position.y][position.x] = tile;
 
@@ -86,6 +87,8 @@ namespace Gazeus.DesafioMatch3.Views
                 TileSpotView tileSpot = _tileSpots[position.y][position.x];
 
                 tileSpot.SetChildParticleColor();
+
+                tileSpot.SetSelectedMaterialToImage(true);
 
                 Destroy(_tiles[position.y][position.x], 1f);
                 _tiles[position.y][position.x] = null;

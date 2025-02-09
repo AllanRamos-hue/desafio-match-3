@@ -52,6 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _button: {fileID: 3397252726085345414}
   _explosionParticle: {fileID: 8826091859030581276}
+  _selectedMaterial: {fileID: 2100000, guid: f5e03acd540e2e54bbd58afba90b1c08, type: 2}
 --- !u!114 &3397252726085345414
 MonoBehaviour:
   m_ObjectHideFlags: 0

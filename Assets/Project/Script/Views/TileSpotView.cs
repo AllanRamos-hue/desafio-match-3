@@ -10,7 +10,10 @@ namespace Gazeus.DesafioMatch3.Views
         public event Action<int, int> Clicked;
 
         [SerializeField] private Button _button;
+        
         [SerializeField] private ParticleSystem _explosionParticle;
+
+        [SerializeField] private Material _selectedMaterial;
 
         private int _x;
         private int _y;
@@ -45,6 +48,21 @@ namespace Gazeus.DesafioMatch3.Views
         private void OnTileClick()
         {
             Clicked?.Invoke(_x, _y);
+        }
+
+        public void SetSelectedMaterialToImage(bool value = false)
+        {
+            Image image = GetComponentInChildren<Image>();
+
+            if(value)
+            {
+                image.material = _selectedMaterial;
+            }
+            else
+            {
+                image.material = null;
+            }
+            
         }
 
         public void SetChildParticleColor()
