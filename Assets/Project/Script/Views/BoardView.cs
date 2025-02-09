@@ -5,6 +5,7 @@ using Gazeus.DesafioMatch3.Models;
 using Gazeus.DesafioMatch3.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace Gazeus.DesafioMatch3.Views
 {
@@ -84,11 +85,16 @@ namespace Gazeus.DesafioMatch3.Views
 
                 TileSpotView tileSpot = _tileSpots[position.y][position.x];
 
-                tileSpot.PlayParticle();
+                tileSpot.SetChildParticleColor();
 
-                Destroy(_tiles[position.y][position.x]);
+                Destroy(_tiles[position.y][position.x], 1f);
                 _tiles[position.y][position.x] = null;
 
+                DOVirtual.DelayedCall(1f, () =>
+                {
+                    tileSpot.PlayParticle();
+                });
+               
                 _scoreManager.AddPoints();
             }
 

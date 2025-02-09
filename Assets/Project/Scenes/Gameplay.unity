@@ -175,7 +175,6 @@ MonoBehaviour:
   _tilePrefabRepository: {fileID: 11400000, guid: 153eac3747f207a40add49ed6e2dacb9, type: 2}
   _tileSpotPrefab: {fileID: -4864831497923239132, guid: 6527630aaec5689489d14bfbb482fd0f, type: 3}
   _scoreManager: {fileID: 1361904666}
-  _explosionParticlesPrefab: {fileID: 5418513732993320302, guid: 23780f1cee1a4984db10dec791ca6e7d, type: 3}
 --- !u!114 &429446045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -775,7 +774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31d799f1edbe6a04cb2d1c04ea171bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startOn: 1
+  _startOn: 0
   _fadeTime: 1
 --- !u!1 &1361904663
 GameObject:
