@@ -11,19 +11,14 @@ namespace Gazeus.DesafioMatch3.Views
     public class BoardView : MonoBehaviour
     {
         public event Action<int, int> TileClicked;
-
+       
         [SerializeField] private GridLayoutGroup _boardContainer;
         [SerializeField] private TilePrefabRepository _tilePrefabRepository;
         [SerializeField] private TileSpotView _tileSpotPrefab;
+        [SerializeField] private ScoreManager _scoreManager;
 
         private GameObject[][] _tiles;
         private TileSpotView[][] _tileSpots;
-        private ScoreManager _scoreManager;
-
-        private void Start()
-        {
-            _scoreManager = GetComponent<ScoreManager>();
-        }
 
         public void CreateBoard(List<List<Tile>> board)
         {
@@ -86,6 +81,11 @@ namespace Gazeus.DesafioMatch3.Views
             for (int i = 0; i < matchedPosition.Count; i++)
             {
                 Vector2Int position = matchedPosition[i];
+
+                TileSpotView tileSpot = _tileSpots[position.y][position.x];
+
+                tileSpot.PlayParticle();
+
                 Destroy(_tiles[position.y][position.x]);
                 _tiles[position.y][position.x] = null;
 

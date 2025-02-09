@@ -8,8 +8,10 @@ namespace Gazeus.DesafioMatch3.Views
     public class TileSpotView : MonoBehaviour
     {
         public event Action<int, int> Clicked;
+        public event Action<int, int> Destroyed;
 
         [SerializeField] private Button _button;
+        [SerializeField] private ParticleSystem _explosionParticle;
 
         private int _x;
         private int _y;
@@ -44,6 +46,21 @@ namespace Gazeus.DesafioMatch3.Views
         private void OnTileClick()
         {
             Clicked?.Invoke(_x, _y);
+        }
+
+        private void OnTileDestroyed()
+        {
+            Destroyed?.Invoke(_x, _y);  
+        }
+
+        public void PlayParticle()
+        {
+            Image image = GetComponentInChildren<Image>();
+            
+            var main = _explosionParticle.main;
+            main.startColor = image.color;
+
+            _explosionParticle.Play();
         }
     }
 }

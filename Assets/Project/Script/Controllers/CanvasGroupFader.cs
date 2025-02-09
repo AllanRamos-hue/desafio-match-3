@@ -32,7 +32,12 @@ public class CanvasGroupFader : MonoBehaviour
         StartCoroutine(FadeIn());
     }
 
-    IEnumerator FadeIn()
+    public void DoFadeOut()
+    {
+        StartCoroutine(FadeOut());
+    }
+
+    private IEnumerator FadeIn()
     {
         _isFading = true;
         _currentFadeTime = _myCanvasGroup.alpha * _fadeTime;
@@ -58,13 +63,7 @@ public class CanvasGroupFader : MonoBehaviour
         _myCanvasGroup.blocksRaycasts = true;
     }
 
-    public void DoFadeOut()
-    {
-        StartCoroutine(FadeOut());
-    }
-
-
-    IEnumerator FadeOut()
+    private IEnumerator FadeOut()
     {
         _isFading = true;
 
@@ -89,14 +88,5 @@ public class CanvasGroupFader : MonoBehaviour
             _percOfFade = _currentFadeTime / _fadeTime;
             _myCanvasGroup.alpha = Mathf.Lerp(1, 0, _percOfFade);
         }
-    }
-    
-    private void SetCanvasFaded(bool fadedIn)
-    {
-        _myCanvasGroup.alpha = (fadedIn) ? 1 : 0;
-        _myCanvasGroup.interactable = fadedIn;
-        _myCanvasGroup.blocksRaycasts = fadedIn;
-        _isFadedIn = fadedIn;
-        _isFading = false;
     }
 }
