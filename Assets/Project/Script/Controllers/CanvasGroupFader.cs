@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class CanvasGroupFader : MonoBehaviour

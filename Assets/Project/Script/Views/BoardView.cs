@@ -18,6 +18,12 @@ namespace Gazeus.DesafioMatch3.Views
 
         private GameObject[][] _tiles;
         private TileSpotView[][] _tileSpots;
+        private ScoreManager _scoreManager;
+
+        private void Start()
+        {
+            _scoreManager = GetComponent<ScoreManager>();
+        }
 
         public void CreateBoard(List<List<Tile>> board)
         {
@@ -82,6 +88,8 @@ namespace Gazeus.DesafioMatch3.Views
                 Vector2Int position = matchedPosition[i];
                 Destroy(_tiles[position.y][position.x]);
                 _tiles[position.y][position.x] = null;
+
+                _scoreManager.AddPoints();
             }
 
             return DOVirtual.DelayedCall(0.2f, () => { });
