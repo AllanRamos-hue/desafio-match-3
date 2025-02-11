@@ -59,5 +59,7 @@ Material:
     - _BUILTIN_ZWrite: 1
     - _BUILTIN_ZWriteControl: 0
     - _CycleTime: 1
+    - _Speed: 2
+    - _Value: 10
     m_Colors: []
   m_BuildTextureStacks: []

@@ -67,7 +67,7 @@ namespace Gazeus.DesafioMatch3.Views
                 GameObject tilePrefab = _tilePrefabRepository.TileTypePrefabList[addedTileInfo.Type];
                 GameObject tile = Instantiate(tilePrefab);
                 tileSpot.SetTile(tile);
-                tileSpot.SetSelectedMaterialToImage();
+                
 
                 _tiles[position.y][position.x] = tile;
 
