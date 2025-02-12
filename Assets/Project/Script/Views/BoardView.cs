@@ -5,7 +5,6 @@ using Gazeus.DesafioMatch3.Models;
 using Gazeus.DesafioMatch3.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 namespace Gazeus.DesafioMatch3.Views
 {
@@ -80,6 +79,10 @@ namespace Gazeus.DesafioMatch3.Views
 
         public Tween DestroyTiles(List<Vector2Int> matchedPosition)
         {
+            
+            int matchLength = matchedPosition.Count;
+
+
             for (int i = 0; i < matchedPosition.Count; i++)
             {
                 Vector2Int position = matchedPosition[i];
@@ -90,15 +93,21 @@ namespace Gazeus.DesafioMatch3.Views
 
                 tileSpot.SetSelectedMaterialToImage(true);
 
+                if (matchLength > 3)
+                {
+                    HighlightComboEffect(matchLength, matchedPosition[i].x, matchedPosition[i].y);
+                }
+
                 Destroy(_tiles[position.y][position.x], 1f);
                 _tiles[position.y][position.x] = null;
 
+                
                 DOVirtual.DelayedCall(1f, () =>
                 {
-                    tileSpot.PlayParticle();
+                    tileSpot.PlayParticle(); 
                 });
-               
-                _scoreManager.AddPoints();
+
+                _scoreManager.AddPoints(); 
             }
 
             return DOVirtual.DelayedCall(0.2f, () => { });
@@ -143,6 +152,13 @@ namespace Gazeus.DesafioMatch3.Views
             (_tiles[toY][toX], _tiles[fromY][fromX]) = (_tiles[fromY][fromX], _tiles[toY][toX]);
 
             return sequence;
+        }
+
+        public void HighlightComboEffect(int matchLength, int x, int y)
+        {
+            TileSpotView tile = _tileSpots[y][x];
+
+            tile.transform.DOScale(1.2f, 0.2f).SetLoops(2, LoopType.Yoyo);
         }
 
         #region Events

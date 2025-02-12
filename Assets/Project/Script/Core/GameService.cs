@@ -11,6 +11,8 @@ namespace Gazeus.DesafioMatch3.Core
         private List<int> _tilesTypes;
         private int _tileCount;
 
+        public static event Action<int, int, int> OnComboDetected;
+
         public bool IsValidMovement(int fromX, int fromY, int toX, int toY)
         {
             List<List<Tile>> newBoard = CopyBoard(_boardTiles);
@@ -43,7 +45,7 @@ namespace Gazeus.DesafioMatch3.Core
 
         public List<List<Tile>> StartGame(int boardWidth, int boardHeight)
         {
-            _tilesTypes = new List<int> { 0, 1, 2 };
+            _tilesTypes = new List<int> { 0, 1, 2, 3};
             _boardTiles = CreateBoard(boardWidth, boardHeight, _tilesTypes);
 
             return _boardTiles;
@@ -244,7 +246,6 @@ namespace Gazeus.DesafioMatch3.Core
                             matchedTiles[y][x + i] = true;
                         }
 
-                        // Se for um combo maior, chamar destaque
                         HighlightCombo(matchLength, x, y);
                     }
 
@@ -275,7 +276,6 @@ namespace Gazeus.DesafioMatch3.Core
                             matchedTiles[y + i][x] = true;
                         }
 
-                        // Se for um combo maior, chamar destaque
                         HighlightCombo(matchLength, x, y);
                     }
 
@@ -288,14 +288,12 @@ namespace Gazeus.DesafioMatch3.Core
 
         private static void HighlightCombo(int matchLength, int x, int y)
         {
-            if (matchLength == 4)
-                Debug.Log("Combo de 4 peças");
-            else if (matchLength == 5)
-                Debug.Log("Combo de 5 peças");
-            else if (matchLength >= 6)
-                Debug.Log(" SUPER COMBO de " + matchLength + "!");
+            if (matchLength >= 4)
+            {
+                OnComboDetected?.Invoke(matchLength, x, y);
+            }
+            
         }
-
 
         private static bool HasMatch(List<List<bool>> list)
         {

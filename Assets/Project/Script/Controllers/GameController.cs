@@ -24,11 +24,14 @@ namespace Gazeus.DesafioMatch3.Controllers
         {
             _gameEngine = new GameService();
             _boardView.TileClicked += OnTileClick;
+
+            GameService.OnComboDetected += HandleComboEffect;
         }
 
         private void OnDestroy()
         {
             _boardView.TileClicked -= OnTileClick;
+            GameService.OnComboDetected -= HandleComboEffect;
         }
 
         private void Start()
@@ -97,6 +100,11 @@ namespace Gazeus.DesafioMatch3.Controllers
                 _selectedX = x;
                 _selectedY = y;
             }
+        }
+
+        private void HandleComboEffect(int matchLength, int x, int y)
+        {
+            _boardView.HighlightComboEffect(matchLength, x, y);
         }
     }
 }
