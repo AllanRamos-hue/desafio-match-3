@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections.Generic;
 using Gazeus.DesafioMatch3.Models;
 using UnityEngine;
@@ -33,6 +34,7 @@ namespace Gazeus.DesafioMatch3.Core
                     {
                         return true;
                     }
+
                 }
             }
 
@@ -41,7 +43,7 @@ namespace Gazeus.DesafioMatch3.Core
 
         public List<List<Tile>> StartGame(int boardWidth, int boardHeight)
         {
-            _tilesTypes = new List<int> { 0, 1, 2, 3 };
+            _tilesTypes = new List<int> { 0, 1, 2 };
             _boardTiles = CreateBoard(boardWidth, boardHeight, _tilesTypes);
 
             return _boardTiles;
@@ -120,7 +122,7 @@ namespace Gazeus.DesafioMatch3.Core
                     {
                         if (newBoard[y][x].Type == -1)
                         {
-                            int tileType = Random.Range(0, _tilesTypes.Count);
+                            int tileType = UnityEngine.Random.Range(0, _tilesTypes.Count);
                             Tile tile = newBoard[y][x];
                             tile.Id = _tileCount++;
                             tile.Type = _tilesTypes[tileType];
@@ -200,7 +202,7 @@ namespace Gazeus.DesafioMatch3.Core
                     }
 
                     board[y][x].Id = _tileCount++;
-                    board[y][x].Type = noMatchTypes[Random.Range(0, noMatchTypes.Count)];
+                    board[y][x].Type = noMatchTypes[UnityEngine.Random.Range(0, noMatchTypes.Count)];
                 }
             }
 
@@ -209,42 +211,91 @@ namespace Gazeus.DesafioMatch3.Core
 
         private static List<List<bool>> FindMatches(List<List<Tile>> newBoard)
         {
+            int width = newBoard[0].Count;
+            int height = newBoard.Count;
+
             List<List<bool>> matchedTiles = new();
-            for (int y = 0; y < newBoard.Count; y++)
+
+            for (int y = 0; y < height; y++)
             {
-                matchedTiles.Add(new List<bool>(newBoard[y].Count));
-                for (int x = 0; x < newBoard.Count; x++)
+                matchedTiles.Add(new List<bool>(new bool[width]));
+            }
+
+            // Verificar combinações horizontais
+            for (int y = 0; y < height; y++)
+            {
+                int x = 0;
+                while (x < width)
                 {
-                    matchedTiles[y].Add(false);
+                    int matchLength = 1;
+
+                    // Contar quantos tiles consecutivos são do mesmo tipo
+                    while (x + matchLength < width &&
+                           newBoard[y][x].Type == newBoard[y][x + matchLength].Type)
+                    {
+                        matchLength++;
+                    }
+
+                    // Se houver uma sequência maior que 3, marcar todos
+                    if (matchLength >= 3)
+                    {
+                        for (int i = 0; i < matchLength; i++)
+                        {
+                            matchedTiles[y][x + i] = true;
+                        }
+
+                        // Se for um combo maior, chamar destaque
+                        HighlightCombo(matchLength, x, y);
+                    }
+
+                    x += matchLength; // Pular para o próximo bloco não verificado
                 }
             }
 
-            for (int y = 0; y < newBoard.Count; y++)
+            // Verificar combinações verticais
+            for (int x = 0; x < width; x++)
             {
-                for (int x = 0; x < newBoard[y].Count; x++)
+                int y = 0;
+                while (y < height)
                 {
-                    if (x > 1 &&
-                        newBoard[y][x].Type == newBoard[y][x - 1].Type &&
-                        newBoard[y][x - 1].Type == newBoard[y][x - 2].Type)
+                    int matchLength = 1;
+
+                    // Contar quantos tiles consecutivos são do mesmo tipo
+                    while (y + matchLength < height &&
+                           newBoard[y][x].Type == newBoard[y + matchLength][x].Type)
                     {
-                        matchedTiles[y][x] = true;
-                        matchedTiles[y][x - 1] = true;
-                        matchedTiles[y][x - 2] = true;
+                        matchLength++;
                     }
 
-                    if (y > 1 &&
-                        newBoard[y][x].Type == newBoard[y - 1][x].Type &&
-                        newBoard[y - 1][x].Type == newBoard[y - 2][x].Type)
+                    // Se houver uma sequência maior que 3, marcar todos
+                    if (matchLength >= 3)
                     {
-                        matchedTiles[y][x] = true;
-                        matchedTiles[y - 1][x] = true;
-                        matchedTiles[y - 2][x] = true;
+                        for (int i = 0; i < matchLength; i++)
+                        {
+                            matchedTiles[y + i][x] = true;
+                        }
+
+                        // Se for um combo maior, chamar destaque
+                        HighlightCombo(matchLength, x, y);
                     }
+
+                    y += matchLength; // Pular para o próximo bloco não verificado
                 }
             }
 
             return matchedTiles;
         }
+
+        private static void HighlightCombo(int matchLength, int x, int y)
+        {
+            if (matchLength == 4)
+                Debug.Log("Combo de 4 peças");
+            else if (matchLength == 5)
+                Debug.Log("Combo de 5 peças");
+            else if (matchLength >= 6)
+                Debug.Log(" SUPER COMBO de " + matchLength + "!");
+        }
+
 
         private static bool HasMatch(List<List<bool>> list)
         {
