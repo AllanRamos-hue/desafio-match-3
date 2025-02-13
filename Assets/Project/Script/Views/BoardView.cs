@@ -11,6 +11,8 @@ namespace Gazeus.DesafioMatch3.Views
     public class BoardView : MonoBehaviour
     {
         public event Action<int, int> TileClicked;
+        public event Action OnDestroyTiles;
+        public event Action OnHugeCombo;
        
         [SerializeField] private GridLayoutGroup _boardContainer;
         [SerializeField] private TilePrefabRepository _tilePrefabRepository;
@@ -100,11 +102,17 @@ namespace Gazeus.DesafioMatch3.Views
 
                 Destroy(_tiles[position.y][position.x], 1f);
                 _tiles[position.y][position.x] = null;
-
                 
                 DOVirtual.DelayedCall(1f, () =>
                 {
-                    tileSpot.PlayParticle(); 
+                    tileSpot.PlayParticle();
+
+                    OnDestroyTiles?.Invoke();
+
+                    if (matchLength > 3)
+                    {
+                        OnHugeCombo?.Invoke();
+                    }
                 });
 
                 _scoreManager.AddPoints(); 
